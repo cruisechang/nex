@@ -12,15 +12,19 @@ type Room interface {
 	SetActive(value int)
 	Type() int
 	SetType(value int)
+
 	Status() int
 	SetStatus(v int)
 
-	HallID() int
-	SetHallID(hallID int)
+	StatusStart()int64
+	SetStatusStart(v int64)
 
-	AddUser(userID int) error
-	RemoveUser(userID int)
-	GetUsers() []int
+	HallID() int
+	setHallID(hallID int)
+
+	AddUser(user User) error
+	RemoveUser(user User)
+	GetUsers() []User
 
 	//user defined variable
 	SetStringVariable(key, value string)
@@ -53,7 +57,8 @@ type room struct {
 	//user can define the value of you own
 	//default value is -1
 	status int
-	users  []int
+	statusStart int64
+	users  []User
 
 	//string varialbe table
 	strVarTable map[string]string
@@ -81,7 +86,7 @@ func NewRoom(roomID int, name string) Room {
 		intVarTable:       make(map[string]int),
 		interfaceVarTable: make(map[string]interface{}),
 
-		users: []int{},
+		users: []User{},
 	}
 }
 
@@ -92,37 +97,41 @@ func (r *room) ID() int {
 	return r.roomID
 }
 
-func (r *room) AddUser(userID int) error {
+func (r *room) AddUser(user User) error {
 	r.rwMutex.Lock()
 	defer r.rwMutex.Unlock()
 
 	for _, v := range r.users {
-		if v == userID {
+		if v.UserID() == user.UserID() {
 			return errors.New("user already in table")
 		}
 	}
 
-	r.users = append(r.users, userID)
+	user.setRoomID(r.roomID)
+	r.users = append(r.users, user)
+
 	return nil
 }
-func (r *room) RemoveUser(userID int) {
+func (r *room) RemoveUser(user User) {
 	r.rwMutex.Lock()
 	defer r.rwMutex.Unlock()
 
 	for i, v := range r.users {
-		if v == userID {
+		if v.UserID() == user.UserID() {
+			user.setRoomID(-1)
 			r.users = append(r.users[:i], r.users[i+1:]...)
 			break
 		}
 	}
 }
-func (r *room) GetUsers() []int {
+func (r *room) GetUsers() []User {
 	r.rwMutex.RLock()
 	defer r.rwMutex.RUnlock()
 
-	tmp := make([]int, len(r.users))
-	copy(tmp, r.users)
-	return tmp
+	//tmp := make([]int, len(r.users))
+	//copy(tmp, r.users)
+	//return tmp
+	return r.users
 }
 
 func (r *room) Active() int {
@@ -142,7 +151,7 @@ func (r *room) HallID() int {
 	return r.hallID
 }
 
-func (r *room) SetHallID(v int) {
+func (r *room) setHallID(v int) {
 	r.hallID = v
 }
 
@@ -151,6 +160,13 @@ func (r *room) Status() int {
 }
 func (r *room) SetStatus(v int) {
 	r.status = v
+}
+
+func (r *room) StatusStart() int64 {
+	return r.statusStart
+}
+func (r *room) SetStatusStart(v int64) {
+	r.statusStart = v
 }
 
 func (r *room) SetStringVariable(key, value string) {

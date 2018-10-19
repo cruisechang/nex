@@ -20,10 +20,12 @@ type User interface {
 	SetGameID(gameID string)
 
 	HallID()int
-	SetHallID(int)
+	//used by package
+	setHallID(int)
 
 	RoomID()int
-	SetRoomID(int)
+	//used by package
+	setRoomID(int)
 
 
 
@@ -131,13 +133,13 @@ func (u *user) SetSessionID(v string) {
 func (u *user) HallID() int {
 	return u.hallID
 }
-func (u *user) SetHallID(id int) {
+func (u *user) setHallID(id int) {
 	u.hallID = id
 }
 func (u *user) RoomID() int {
 	return u.roomID
 }
-func (u *user) SetRoomID(id int) {
+func (u *user) setRoomID(id int) {
 	u.roomID = id
 }
 

@@ -1,7 +1,7 @@
 # nex
 
 # package interfaces
-import "kumay/gameServer2/interfaces"
+import "github.com/cruisechang/nex"
 
 ### type service
 

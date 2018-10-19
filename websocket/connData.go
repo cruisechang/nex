@@ -140,11 +140,11 @@ func (cd *connData) receive() {
 			return
 		}
 
-		fmt.Printf("receive resBuff=%v",resBuff)
+		//fmt.Printf("receive resBuff=%v \n",resBuff)
 
 		//Check if connection lost or error
 		if err2 != nil {
-			fmt.Printf("receive error, resBuff=%v",resBuff)
+			fmt.Printf("receive error, resBuff=%v \n",resBuff)
 
 			//check close error
 			if e, ok := err2.(*gorillaWebsocket.CloseError); ok {

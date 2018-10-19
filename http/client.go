@@ -1,4 +1,4 @@
-package nex
+package http
 
 import (
 	"errors"
@@ -9,7 +9,7 @@ import (
 )
 
 
-type Requester interface{
+type Client interface{
 	URL()string
 	SetPostURI(path string ,queryPair map[string]string)error
 	PostURI()string
@@ -17,7 +17,7 @@ type Requester interface{
 	Post()(string,error)
 }
 
-type requester struct{
+type client struct{
 	address string
 	port string
 	url string
@@ -25,8 +25,8 @@ type requester struct{
 	postURI string
 	postQuery string
 }
-func NewRequester(address,port string,connectTimeout,handshakeTimeout,requestTimeout int) (Requester,error){
-	re:= &requester{
+func NewClient(address,port string,connectTimeout,handshakeTimeout,requestTimeout int) (Client,error){
+	re:= &client{
 		address:address,
 		port:port,
 		url:"http://" + address + ":" + port + "/",
@@ -49,14 +49,14 @@ func NewRequester(address,port string,connectTimeout,handshakeTimeout,requestTim
 	return re,nil
 }
 
-func (re *requester)URL()string{
+func (re *client)URL()string{
 	return re.url
 }
 
 //SetPostURI
 //queryPair is a map , key is query key, value is query value. eg.  ["data"]{"xxxx"} => data=xxxx
 //query => data=""&age=33....
-func (re *requester)SetPostURI(path string, queryPair map[string]string)error{
+func (re *client)SetPostURI(path string, queryPair map[string]string)error{
 	if len(queryPair)<=0{
 		return errors.New("query pair is len=0")
 	}
@@ -73,14 +73,14 @@ func (re *requester)SetPostURI(path string, queryPair map[string]string)error{
 }
 
 //Get after set post url
-func (re *requester)PostURI()string{
+func (re *client)PostURI()string{
 	return re.postURI
 }
 
-func (re *requester)PostQuery()string{
+func (re *client)PostQuery()string{
 	return re.postQuery
 }
-func (re *requester)Post()(string,error){
+func (re *client)Post()(string,error){
 	resp,err:=re.netClient.Post(re.postURI,"application/x-www-form-urlencoded",strings.NewReader(re.postQuery))
 
 	if err != nil {

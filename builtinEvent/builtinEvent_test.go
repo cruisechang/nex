@@ -1,4 +1,4 @@
-package nex
+package builtinEvent
 
 import (
 	"testing"
@@ -21,7 +21,7 @@ func TestEventManager(t *testing.T) {
 		t.Errorf(s,err.Error())
 	}
 
-	if err=nm.RegisterProcessor(999,p);err==nil{
+	if err=nm.RegisterProcessor(1,p);err==nil{
 		s := "TestEventManager RegisterProcessor must error but not :%s\n"
 		t.Errorf(s,err.Error())
 	}
@@ -35,12 +35,6 @@ func TestEventManager(t *testing.T) {
 		s := "TestEventManager RunProcessor error but not :%s\n"
 		t.Errorf(s,err.Error())
 	}
-
-
-	um,_:=NewUserManager()
-	u,_:=um.CreateUser("xxxx")
-
-	t.Logf("%v:",u)
 
 }
 

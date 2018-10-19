@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"encoding/json"
 	"errors"
+	"time"
 )
 
 //Config config main struct
@@ -44,6 +45,7 @@ func (c *Configurer) loadConfig(filePath string) error {
 
 type confData struct {
 	WebSocketServer *webSocketServerConf
+	HttpServer      *httpServerConf
 	HttpClient      *httpClientConf
 	RPCServer       *rpcServerConf
 	RPCClient       []rpcClientConf
@@ -66,6 +68,15 @@ type webSocketServerConf struct {
 
 	AcceptTimeoutSecond int
 	AliveTimeoutSecond  int
+}
+
+type httpServerConf struct {
+	Address            string
+	Port               string
+	ReadTimeoutSecond  int
+	WriteTimeoutSecond int
+	IdleTimeoutSecond  int
+	MaxHeaderBytes     int
 }
 
 //Requester is request handerl
@@ -120,6 +131,23 @@ func (c *Configurer) WebSocketServerAliveTimeoutSecond() int {
 }
 
 //http
+func (c *Configurer) HttpServerAddress() (addr, port string) {
+	return c.data.HttpServer.Address, c.data.HttpServer.Port
+}
+func (c *Configurer) HttpServerReadTimeout() time.Duration {
+	return time.Second*time.Duration(c.data.HttpServer.ReadTimeoutSecond)
+}
+func (c *Configurer) HttpServerWriteTimeout() time.Duration {
+	return time.Second*time.Duration(c.data.HttpServer.WriteTimeoutSecond)
+}
+func (c *Configurer) HttpServerIdleTimeout() time.Duration {
+	return time.Second*time.Duration(c.data.HttpServer.IdleTimeoutSecond)
+}
+func (c *Configurer) HttpServerMaxHeaderBytes() int {
+	return c.data.HttpServer.MaxHeaderBytes
+}
+//http client
+
 func (c *Configurer) HttpClientAddress() (addr, port string) {
 	return c.data.HttpClient.Address, c.data.HttpClient.Port
 }
@@ -138,8 +166,6 @@ func (c *Configurer) HttpClientRequestTimeoutSecond() int {
 func (c *Configurer) RPCServerAddress() (addr, port string) {
 	return c.data.RPCServer.Address, c.data.RPCServer.Port
 }
-
-
 
 //rpc client
 func (c *Configurer) GetRPCClients() []rpcClientConf {

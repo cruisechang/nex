@@ -3,9 +3,9 @@ package common
 import (
 	"encoding/json"
 	"fmt"
-	"os"
 	"github.com/fatih/color"
 	"github.com/cruisechang/util/debug"
+	"os"
 )
 
 const (

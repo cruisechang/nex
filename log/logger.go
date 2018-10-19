@@ -1,32 +1,34 @@
-package nex
+package log
 
 import (
 	"time"
 	"os"
 	"fmt"
-	golog "log"
+	goLog "log"
 	"runtime"
 )
 
+type Level uint8
+
 const (
-	LogLevelDebug   uint8 = 0
-	LogLevelInfo    uint8 = 1
-	LogLevelWarning uint8 = 2
-	LogLevelError   uint8 = 3
-	LogLevelPanic   uint8 = 4
+	LevelDebug   Level = 0
+	LevelInfo    Level = 1
+	LevelWarning Level = 2
+	LevelError   Level = 3
+	LevelPanic   Level = 4
 )
 
 type Logger interface {
 	SetLogFileName(name string)
-	SetLevel(level uint8)
+	SetLevel(level Level)
 	ActiveLog(active bool)
-	ActiveLogFile(acvite bool)
-	Log(logLevel uint8, msg string)
-	LogFile(logLevel uint8, v ...interface{})
+	ActiveLogFile(active bool)
+	Log(level Level, msg string)
+	LogFile(level Level, v ...interface{})
 }
 
 type logger struct {
-	level         uint8
+	level         Level
 	logFileName   string
 	activeLog     bool
 	activeLogFile bool
@@ -34,7 +36,7 @@ type logger struct {
 
 func NewLogger() (Logger, error) {
 	l := &logger{
-		level:         LogLevelWarning,
+		level:         LevelWarning,
 		logFileName:   "nex",
 		activeLog:     true,
 		activeLogFile: true,
@@ -44,7 +46,7 @@ func NewLogger() (Logger, error) {
 func (l *logger) SetLogFileName(name string) {
 	l.logFileName = name
 }
-func (l *logger) SetLevel(level uint8) {
+func (l *logger) SetLevel(level Level) {
 	l.level = level
 }
 func (l *logger) ActiveLog(active bool) {
@@ -53,7 +55,7 @@ func (l *logger) ActiveLog(active bool) {
 func (l *logger) ActiveLogFile(active bool) {
 	l.activeLogFile = active
 }
-func (l *logger) Log(logLevel uint8, msg string) {
+func (l *logger) Log(logLevel Level, msg string) {
 
 	if !l.activeLog {
 		return
@@ -61,23 +63,23 @@ func (l *logger) Log(logLevel uint8, msg string) {
 
 	prefix := "[Info]"
 	switch logLevel {
-	case LogLevelDebug:
+	case LevelDebug:
 		prefix = "[Debug]"
-	case LogLevelWarning:
+	case LevelWarning:
 		prefix = "[warning]"
-	case LogLevelError:
+	case LevelError:
 		prefix = "[Error]"
-	case LogLevelPanic:
+	case LevelPanic:
 		prefix = "[Panic]"
 
 	}
 
 	_, file, line, _ := runtime.Caller(1)
 
-	golog.Printf("%s%s:%d %v", prefix, file, line, msg)
+	goLog.Printf("%s%s:%d %v", prefix, file, line, msg)
 }
 
-func (l *logger) LogFile(logLevel uint8, v ...interface{}) {
+func (l *logger) LogFile(logLevel Level, v ...interface{}) {
 
 	if !l.activeLogFile {
 		return
@@ -87,13 +89,13 @@ func (l *logger) LogFile(logLevel uint8, v ...interface{}) {
 
 		prefix := "[Info]"
 		switch logLevel {
-		case LogLevelDebug:
+		case LevelDebug:
 			prefix = "[Debug]"
-		case LogLevelWarning:
+		case LevelWarning:
 			prefix = "[warning]"
-		case LogLevelError:
+		case LevelError:
 			prefix = "[Error]"
-		case LogLevelPanic:
+		case LevelPanic:
 			prefix = "[Panic]"
 
 		}
@@ -101,7 +103,7 @@ func (l *logger) LogFile(logLevel uint8, v ...interface{}) {
 		f, err := os.OpenFile(filePath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 
 		if err == nil {
-			lr := golog.New(f, prefix, golog.LstdFlags|golog.Lshortfile)
+			lr := goLog.New(f, prefix, goLog.LstdFlags|goLog.Lshortfile)
 			lr.Output(5, fmt.Sprintln(v))
 
 		}

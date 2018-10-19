@@ -16,9 +16,14 @@ type Hall interface {
 	Status() int
 	SetStatus(value int)
 
-	AddRoom(roomID int) error
-	RemoveRoom(roomD int)
-	GetRooms() []int
+	AddRoom(room Room) error
+	RemoveRoom(room Room)
+	GetRooms() []Room
+
+
+	AddUser(user User)error
+	RemoveUser(user User)
+	GetUsers()[]User
 
 	SetStringVariable(key, value string)
 	GetStringVariable(key string) (string, error)
@@ -52,7 +57,8 @@ type hall struct {
 	//user can define the value of you own
 	//default value is -1
 	status int
-	rooms   []int
+	rooms   []Room
+	users []User
 
 	//string varialbe table
 	strVarTable map[string]string
@@ -74,7 +80,8 @@ func NewHall(hallID int, name string) Hall {
 		active:            1,
 		tpy:               -1,
 		status:            -1,
-		rooms:             []int{},
+		rooms:             []Room{},
+		users:             []User{},
 		strVarTable:       make(map[string]string),
 		floatVarTable:     make(map[string]float32),
 		intVarTable:       make(map[string]int),
@@ -111,38 +118,73 @@ func (h *hall) SetStatus(v int) {
 	h.status = v
 }
 
-func (h *hall) AddRoom(userID int) error {
+func (h *hall) AddRoom(room  Room) error {
 	h.rwMutex.Lock()
 	defer h.rwMutex.Unlock()
 
 	for _, v := range h.rooms {
-		if v == userID {
+		if v.ID() == room.ID() {
 			return errors.New("user already in table")
 		}
 	}
-
-	h.rooms = append(h.rooms, userID)
+	room.setHallID(h.hallID)
+	h.rooms = append(h.rooms, room)
 	return nil
 }
-func (h *hall) RemoveRoom(userID int) {
+func (h *hall) RemoveRoom(room Room) {
 	h.rwMutex.Lock()
 	defer h.rwMutex.Unlock()
 
 	for i, v := range h.rooms {
-		if v == userID {
+		if v.ID() == room.ID() {
+			room.setHallID(-1)
 			h.rooms = append(h.rooms[:i], h.rooms[i+1:]...)
 			break
 		}
 	}
 }
-func (h *hall) GetRooms() []int {
+func (h *hall) GetRooms() []Room {
 	h.rwMutex.RLock()
 	defer h.rwMutex.RUnlock()
 
-	tmp := make([]int, len(h.rooms))
-	copy(tmp, h.rooms)
-	return tmp
+	//tmp := make([]int, len(h.rooms))
+	//copy(tmp, h.rooms)
+	//return tmp
+	return h.rooms
+
 }
+//user
+func (h *hall) AddUser(user User) error {
+	h.rwMutex.Lock()
+	defer h.rwMutex.Unlock()
+
+	for _, v := range h.users {
+		if v.UserID() == user.UserID() {
+			return errors.New("user already in table")
+		}
+	}
+	user.setHallID(h.hallID)
+	h.users = append(h.users, user)
+	return nil
+}
+func (h *hall) RemoveUser(user User) {
+	h.rwMutex.Lock()
+	defer h.rwMutex.Unlock()
+
+	for i, v := range h.users {
+		if v.UserID() == user.UserID() {
+			user.setHallID(-1)
+			h.users = append(h.users[:i], h.users[i+1:]...)
+			break
+		}
+	}
+}
+func (h *hall) GetUsers()[]User {
+	h.rwMutex.Lock()
+	defer h.rwMutex.Unlock()
+	return h.users
+}
+
 
 func (h *hall) SetStringVariable(key, value string) {
 	h.strVarTable[key] = value

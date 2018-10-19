@@ -49,22 +49,22 @@ Following is for event
 
 //Notify code is defined by nex
 //user use this code to receive notify
-const (
-	EventUserLost uint16 = 0
-)
-
-type EventObject struct {
-	Code uint16
-	User entity.User
-}
+//const (
+//	EventUserLost uint16 = 0
+//)
+//
+//type EventObject struct {
+//	Code uint16
+//	User entity.User
+//}
 
 //NotifyProcessor is a interface
 //user implements this interface to create notify processor
 //and register the process to nex
 //when notify fired , processor will be executed
-type EventProcessor interface {
-	Run(obj *EventObject) error
-}
+//type EventProcessor interface {
+//	Run(obj *EventObject) error
+//}
 
 /*
  updateProcessor is a scheduled processon
