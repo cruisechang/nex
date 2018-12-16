@@ -20,7 +20,7 @@ type Room interface {
 	SetStatusStart(v int64)
 
 	HallID() int
-	setHallID(hallID int)
+	SetHallID(hallID int)
 
 	AddUser(user User) error
 	RemoveUser(user User)
@@ -151,7 +151,7 @@ func (r *room) HallID() int {
 	return r.hallID
 }
 
-func (r *room) setHallID(v int) {
+func (r *room) SetHallID(v int) {
 	r.hallID = v
 }
 

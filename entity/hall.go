@@ -127,7 +127,7 @@ func (h *hall) AddRoom(room  Room) error {
 			return errors.New("user already in table")
 		}
 	}
-	room.setHallID(h.hallID)
+	room.SetHallID(h.hallID)
 	h.rooms = append(h.rooms, room)
 	return nil
 }
@@ -137,7 +137,7 @@ func (h *hall) RemoveRoom(room Room) {
 
 	for i, v := range h.rooms {
 		if v.ID() == room.ID() {
-			room.setHallID(-1)
+			room.SetHallID(-1)
 			h.rooms = append(h.rooms[:i], h.rooms[i+1:]...)
 			break
 		}
