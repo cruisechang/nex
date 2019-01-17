@@ -1,22 +1,23 @@
 package nex
 
 import (
+	"fmt"
+	goLog "log"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
-	"github.com/cruisechang/nex/entity"
+	"time"
+
 	"github.com/cruisechang/nex/builtinEvent"
+	"github.com/cruisechang/nex/entity"
 	"github.com/cruisechang/nex/event"
-	"github.com/cruisechang/nex/websocket"
 	nxhttp "github.com/cruisechang/nex/http"
 	nxlog "github.com/cruisechang/nex/log"
 	nxRPC "github.com/cruisechang/nex/rpc"
-	"time"
-	goLog "log"
-	"fmt"
-	"google.golang.org/grpc"
-	"net/http"
+	"github.com/cruisechang/nex/websocket"
 	"github.com/juju/errors"
+	"google.golang.org/grpc"
 )
 
 const (
@@ -281,7 +282,7 @@ func (nx *nex) handleCtrlC() {
 
 /*
   Following are for command
- */
+*/
 //RegisterCommandProcessor is a wrapper for commandHandler.RegisterProcessor
 func (nx *nex) RegisterCommandProcessor(key string, p CommandProcessor) error {
 	return nx.commandManager.RegisterProcessor(key, p)
@@ -344,14 +345,14 @@ func (nx *nex) DispatchEvent(event string) {
 
 /*
 followings are for updater
- */
+*/
 func (nx *nex) RegisterUpdateProcessor(name string, p UpdateProcessor) error {
 	return nx.updateManager.RegisterProcessor(name, p)
 }
 
 /*
  unregister 一定要檢查是否stop 否則可能run 不停
- */
+*/
 func (nx *nex) UnRegisterUpdateProcessor(name string) error {
 	return nx.updateManager.UnRegisterProcessor(name)
 

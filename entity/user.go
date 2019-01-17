@@ -47,7 +47,11 @@ type User interface {
 	GetFloatVariable(key string) (float32, error)
 
 	SetIntVariable(key string, value int)
+
 	GetIntVariable(key string) (int, error)
+
+	SetInt64Variable(key string, value int64)
+	GetInt64Variable(key string) (int64, error)
 
 	SetInterfaceVariable(key string, value interface{})
 	GetInterfaceVariable(key string) (interface{}, error)
@@ -79,6 +83,7 @@ type user struct {
 	strVarTable   map[string]string  //string varialbe table
 	floatVarTable map[string]float32 //float32 varialbe table
 	intVarTable   map[string]int     //int variable table
+	int64VarTable   map[string]int64     //int variable table
 	interfaceVarTable map[string]interface{} //int variable table
 }
 
@@ -90,10 +95,12 @@ func NewUser(userID int, connID string) User {
 		strVarTable:   make(map[string]string),
 		floatVarTable: make(map[string]float32),
 		intVarTable:   make(map[string]int),
+		int64VarTable:   make(map[string]int64),
 		interfaceVarTable: make(map[string]interface{}),
 		hallID:-1,
 		roomID:-1,
 		status:-1,
+		name:"default",
 	}
 }
 
@@ -202,6 +209,16 @@ func (u *user) GetIntVariable(key string) (int, error) {
 	return 0, errors.New("variable not found")
 }
 
+func (u *user) SetInt64Variable(key string, value int64) {
+	u.int64VarTable[key] = value
+}
+func (u *user) GetInt64Variable(key string) (int64, error) {
+	v, ok := u.int64VarTable[key]
+	if ok {
+		return v, nil
+	}
+	return 0, errors.New("variable not found")
+}
 func (u *user) SetInterfaceVariable(key string, value interface{}) {
 	u.interfaceVarTable[key] = value
 }

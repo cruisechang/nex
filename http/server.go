@@ -6,18 +6,18 @@ import (
 	goHTTP "net/http"
 	"time"
 
-	"strings"
 	"net"
+	"strings"
 )
 
 //Service is a httpApi service for http request operation.
 type Server interface {
-	Start()error
+	Start() error
 	Stop()
 	GetRealAddr(r *goHTTP.Request) string
 	RegisterHandler(pattern string, handler goHTTP.Handler)
-
 }
+
 type ServerParameters struct {
 	Address        string
 	Port           string
@@ -27,8 +27,8 @@ type ServerParameters struct {
 	MaxHeaderBytes int
 }
 type server struct {
-	server       *goHTTP.Server
-	apiMux       *goHTTP.ServeMux
+	server *goHTTP.Server
+	apiMux *goHTTP.ServeMux
 }
 
 //NewService make a new SocketManager
@@ -41,14 +41,14 @@ func NewServer(params *ServerParameters) (s Server, err error) {
 		}
 	}()
 
-	if  params.Port == "" {
+	if params.Port == "" {
 		return nil, errors.New("address error ")
 	}
 
 	sv := &server{
 		apiMux: goHTTP.NewServeMux(),
 		server: &goHTTP.Server{
-			Addr: params.Address + ":" + params.Port,
+			Addr:           params.Address + ":" + params.Port,
 			ReadTimeout:    params.ReadTimeout,
 			WriteTimeout:   params.WriteTimeout,
 			IdleTimeout:    params.IdleTimeout,
@@ -70,7 +70,7 @@ func newAPIServeMux() *goHTTP.ServeMux {
 }
 
 //Start starts service.
-func (s *server) Start() error{
+func (s *server) Start() error {
 	go s.server.ListenAndServe()
 	return nil
 }
@@ -92,6 +92,7 @@ func requestHandler(w goHTTP.ResponseWriter, r *goHTTP.Request) {
 	w.Write([]byte("not found"))
 
 }
+
 /*
 func requestHandler(w goHTTP.ResponseWriter, r *goHTTP.Request) {
 
@@ -168,4 +169,3 @@ func (s *server) GetRealAddr(r *goHTTP.Request) string {
 
 	return remoteIP
 }
-

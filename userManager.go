@@ -38,7 +38,7 @@ func (um *userManager) CreateUser(connID string) (entity.User, error) {
 	}
 
 	um.mutex.Lock()
-	userCount += 1
+	userCount ++
 	u := entity.NewUser(userCount, connID)
 	um.userTable[connID] = u
 	um.mutex.Unlock()

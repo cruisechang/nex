@@ -20,10 +20,9 @@ type Hall interface {
 	RemoveRoom(room Room)
 	GetRooms() []Room
 
-
-	AddUser(user User)error
+	AddUser(user User) error
 	RemoveUser(user User)
-	GetUsers()[]User
+	GetUsers() []User
 
 	SetStringVariable(key, value string)
 	GetStringVariable(key string) (string, error)
@@ -52,13 +51,13 @@ type hall struct {
 	//tpy is indicates the type of the room,
 	//user can define the value of you own
 	//default value is -1
-	tpy     int
+	tpy int
 	//status is indicates the status of the room,
 	//user can define the value of you own
 	//default value is -1
 	status int
-	rooms   []Room
-	users []User
+	rooms  []Room
+	users  []User
 
 	//string varialbe table
 	strVarTable map[string]string
@@ -118,7 +117,7 @@ func (h *hall) SetStatus(v int) {
 	h.status = v
 }
 
-func (h *hall) AddRoom(room  Room) error {
+func (h *hall) AddRoom(room Room) error {
 	h.rwMutex.Lock()
 	defer h.rwMutex.Unlock()
 
@@ -153,6 +152,7 @@ func (h *hall) GetRooms() []Room {
 	return h.rooms
 
 }
+
 //user
 func (h *hall) AddUser(user User) error {
 	h.rwMutex.Lock()
@@ -179,12 +179,11 @@ func (h *hall) RemoveUser(user User) {
 		}
 	}
 }
-func (h *hall) GetUsers()[]User {
+func (h *hall) GetUsers() []User {
 	h.rwMutex.Lock()
 	defer h.rwMutex.Unlock()
 	return h.users
 }
-
 
 func (h *hall) SetStringVariable(key, value string) {
 	h.strVarTable[key] = value
