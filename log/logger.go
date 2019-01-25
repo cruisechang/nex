@@ -1,11 +1,11 @@
 package log
 
 import (
-	"time"
-	"os"
 	"fmt"
 	goLog "log"
+	"os"
 	"runtime"
+	"time"
 )
 
 type Level uint8
@@ -102,12 +102,17 @@ func (l *logger) LogFile(logLevel Level, v ...interface{}) {
 		filePath := l.logFileName + time.Now().Format("20060102") + ".log"
 		f, err := os.OpenFile(filePath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 
+		defer func() {
+			if err := f.Close(); err != nil {
+				//panic(err)
+				goLog.Printf("LogFile error=%s",err.Error())
+			}
+		}()
+
 		if err == nil {
 			lr := goLog.New(f, prefix, goLog.LstdFlags|goLog.Lshortfile)
 			lr.Output(5, fmt.Sprintln(v))
-
 		}
-		defer f.Close()
 
 	}
 }
