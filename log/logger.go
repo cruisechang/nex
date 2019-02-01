@@ -32,6 +32,7 @@ type logger struct {
 	logFileName   string
 	activeLog     bool
 	activeLogFile bool
+	file          *os.File
 }
 
 func NewLogger() (Logger, error) {
@@ -41,6 +42,12 @@ func NewLogger() (Logger, error) {
 		activeLog:     true,
 		activeLogFile: true,
 	}
+
+	f, err := l.createFile()
+	if err != nil {
+		return nil, err
+	}
+	l.file = f
 	return l, nil
 }
 func (l *logger) SetLogFileName(name string) {
@@ -78,6 +85,20 @@ func (l *logger) Log(logLevel Level, msg string) {
 
 	goLog.Printf("%s%s:%d %v", prefix, file, line, msg)
 }
+func (l *logger) createFile() (*os.File, error) {
+	filePath := l.logFileName + time.Now().Format("20060102") + ".log"
+	return os.OpenFile(filePath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+
+}
+func (l *logger) closeFile() error {
+	if l.file != nil {
+		if err := l.file.Close(); err != nil {
+			goLog.Printf("LogFile error=%s", err.Error())
+			return err
+		}
+	}
+	return nil
+}
 
 func (l *logger) LogFile(logLevel Level, v ...interface{}) {
 
@@ -99,13 +120,14 @@ func (l *logger) LogFile(logLevel Level, v ...interface{}) {
 			prefix = "[Panic]"
 
 		}
+
 		filePath := l.logFileName + time.Now().Format("20060102") + ".log"
 		f, err := os.OpenFile(filePath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 
 		defer func() {
 			if err := f.Close(); err != nil {
 				//panic(err)
-				goLog.Printf("LogFile error=%s",err.Error())
+				goLog.Printf("LogFile error=%s", err.Error())
 			}
 		}()
 
@@ -114,5 +136,18 @@ func (l *logger) LogFile(logLevel Level, v ...interface{}) {
 			lr.Output(5, fmt.Sprintln(v))
 		}
 
+		//if l.file != nil {
+		//	lr := goLog.New(l.file, prefix, goLog.LstdFlags|goLog.Lshortfile)
+		//	lr.Output(5, fmt.Sprintln(v))
+		//} else {
+		//	file, err := l.createFile()
+		//	if err != nil {
+		//		goLog.Printf("LogFile file=nil, then createFile() err%s", err.Error())
+		//		return
+		//
+		//	}
+		//	l.file = file
+		//	l.LogFile(logLevel, v)
+		//}
 	}
 }

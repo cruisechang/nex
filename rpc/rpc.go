@@ -1,30 +1,31 @@
 package rpc
 
 import (
-	"google.golang.org/grpc"
-	"fmt"
-	"strings"
-	"reflect"
-	"net"
 	"errors"
-	nlog "github.com/cruisechang/nex/log"
+	"fmt"
+	"net"
+	"reflect"
+	"strings"
+
+	"github.com/cruisechang/nex/log"
+	"google.golang.org/grpc"
 )
 
 var (
 	server     *grpc.Server
 	svrAddress string
 	svrPort    string
-	logger     nlog.Logger
+	logger     log.Logger
 )
 
-func NewServer(address, port string, logg nlog.Logger) *grpc.Server {
+func NewServer(address, port string, log log.Logger) *grpc.Server {
 	server = grpc.NewServer()
 	svrAddress = address
 	svrPort = port
-	logger = logg
+	logger = log
 	return server
 }
-func StartServer(registerServerFunc interface{}, serverStruct interface{}) (error) {
+func StartServer(registerServerFunc interface{}, serverStruct interface{}) error {
 
 	if strings.Index(reflect.TypeOf(registerServerFunc).String(), "func") != 0 {
 		return errors.New("StartGRPCServer fn is not function")
@@ -43,12 +44,12 @@ func StartServer(registerServerFunc interface{}, serverStruct interface{}) (erro
 	go func() {
 		defer func() {
 			if r := recover(); r != nil {
-				logger.Log(nlog.LevelPanic, fmt.Sprintf("StartGRPCServer panic=%v", r))
+				logger.Log(log.LevelPanic, fmt.Sprintf("StartGRPCServer panic=%v", r))
 			}
 		}()
 
 		if err := server.Serve(lis); err != nil {
-			logger.Log(nlog.LevelError, fmt.Sprintf("StartGRPCServer serve error=%s", err.Error()))
+			logger.Log(log.LevelError, fmt.Sprintf("StartGRPCServer serve error=%s", err.Error()))
 			return
 		}
 	}()
