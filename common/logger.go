@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/fatih/color"
-	"github.com/cruisechang/util/debug"
+	"github.com/cruisechang/goutil/debug"
 	"os"
 )
 

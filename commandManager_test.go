@@ -1,25 +1,22 @@
 package nex
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
-
 
 func TestCommandManager(t *testing.T) {
 
 	cm, _ := NewCommandManager()
 
-
-	cmdStr:="login"
-
+	cmdStr := "login"
 
 	obj := CommandObject{
-		Cmd:  &Command{
-			Code: 0,
+		Cmd: &Command{
+			Code:    0,
 			Command: cmdStr,
-			Step: 0,
-			Data: "data",
+			Step:    0,
+			Data:    "data",
 		},
 		User: nil,
 	}
@@ -52,4 +49,3 @@ func (p *cmdProcessor) Run(obj *CommandObject) error {
 	fmt.Printf("CommandProcessor is running!\n")
 	return nil
 }
-

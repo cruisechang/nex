@@ -2,9 +2,9 @@ package nex
 
 import (
 	"encoding/binary"
-	"github.com/cruisechang/util/security"
-	"github.com/cruisechang/nex/websocket"
 	"errors"
+	"github.com/cruisechang/goutil/security"
+	"github.com/cruisechang/nex/websocket"
 )
 
 const (
@@ -15,7 +15,7 @@ const (
 )
 
 type PacketHandler interface {
-	Handle(packetData *websocket.ReceivePacketData) ([]byte,string,error)
+	Handle(packetData *websocket.ReceivePacketData) ([]byte, string, error)
 	//CheckPacketLength(readBuff []byte)error
 	//ParsePacket(bytes []byte) (int, int, []byte, error)
 }
@@ -31,22 +31,22 @@ func NewPacketHandler() (PacketHandler, error) {
 }
 
 //Handle checks packet length and parse packet into bodyLen, dataType, body
-func (ph *packetHandler) Handle(packetData *websocket.ReceivePacketData) (packetBody []byte, connUUID string,err error) {
+func (ph *packetHandler) Handle(packetData *websocket.ReceivePacketData) (packetBody []byte, connUUID string, err error) {
 
 	//TextMessage
-	 if packetData.MessageType== websocket.TextMessage {
-	 	packetBody=packetData.Packet
-	 	return packetBody,packetData.ConnID,nil
+	if packetData.MessageType == websocket.TextMessage {
+		packetBody = packetData.Packet
+		return packetBody, packetData.ConnID, nil
 	}
 
 	if err = ph.checkPacketLength(packetData.Packet); err != nil {
-		return  packetData.Packet,packetData.ConnID,err
+		return packetData.Packet, packetData.ConnID, err
 	}
 
 	_, _, packetBody, err = ph.parsePacket(packetData.Packet)
 
 	if err != nil {
-		return packetBody, packetData.ConnID,err
+		return packetBody, packetData.ConnID, err
 	}
 
 	//decrypted
@@ -57,7 +57,7 @@ func (ph *packetHandler) Handle(packetData *websocket.ReceivePacketData) (packet
 	//	return
 	//}
 
-	return packetBody,packetData.ConnID,nil
+	return packetBody, packetData.ConnID, nil
 }
 func (ph *packetHandler) checkPacketLength(readBuff []byte) error {
 	//read from gorilla websocket conn
@@ -133,7 +133,6 @@ func (ph *packetHandler) composePacket(packetType uint16, packetBody []byte) []b
 
 }
 
-
 //encrypt read packet data
 func (ph *packetHandler) encryptPacket(data []byte, key []byte) (resData []byte, resErr error) {
 	defer func() {
@@ -159,5 +158,3 @@ func (ph *packetHandler) decryptPacket(data []byte, key []byte) (resData []byte,
 
 	return resData, resErr
 }
-
-

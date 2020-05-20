@@ -5,11 +5,11 @@ import (
 	"sync"
 	"time"
 
-	gorillaWebsocket "github.com/gorilla/websocket"
-	"github.com/cruisechang/util/uuid"
-	"github.com/cruisechang/util/security"
-	"github.com/cruisechang/nex/common"
 	"fmt"
+	"github.com/cruisechang/goutil/security"
+	"github.com/cruisechang/goutil/uuid"
+	"github.com/cruisechang/nex/common"
+	gorillaWebsocket "github.com/gorilla/websocket"
 )
 
 //ConnData is connection object
@@ -34,7 +34,6 @@ type connData struct {
 	connectLostChan   chan string             //contains lost connID  send to websocket
 	receivePacketChan chan *ReceivePacketData //send to websocket
 	aliveTimeout      time.Duration
-
 }
 
 //newConnData returns a new connData.
@@ -124,7 +123,6 @@ func (cd *connData) receive() {
 		//read from gorilla websocket conn
 		msgType, resBuff, err2 := cd.conn.ReadMessage()
 
-
 		//After readPacket,maybe timeout already, so return
 		if !cd.active {
 			common.PrintInfo(cd.receive, "After readPacket but aliveTimeout")
@@ -144,7 +142,7 @@ func (cd *connData) receive() {
 
 		//Check if connection lost or error
 		if err2 != nil {
-			fmt.Printf("receive error, resBuff=%v \n",resBuff)
+			fmt.Printf("receive error, resBuff=%v \n", resBuff)
 
 			//check close error
 			if e, ok := err2.(*gorillaWebsocket.CloseError); ok {

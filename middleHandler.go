@@ -1,8 +1,8 @@
 package nex
 
 import (
-	"encoding/json"
 	"encoding/base64"
+	"encoding/json"
 )
 
 type MiddleHandler interface {
@@ -22,42 +22,40 @@ func NewMiddleHandler() (MiddleHandler, error) {
 
 func (m *middleHandler) PacketToCommand(packet []byte) (*Command, error) {
 
-	baseStr:=string(packet)
+	baseStr := string(packet)
 
-	b,err:=base64.StdEncoding.DecodeString(baseStr)
+	b, err := base64.StdEncoding.DecodeString(baseStr)
 
-	if err!=nil{
-		return nil,err
+	if err != nil {
+		return nil, err
 	}
 	c := &Command{}
-	err=json.Unmarshal(b, c)
+	err = json.Unmarshal(b, c)
 
 	return c, err
 }
 
 func (m *middleHandler) CommandToPacket(cmd *Command) ([]byte, error) {
 
-	c,err:=json.Marshal(cmd)
+	c, err := json.Marshal(cmd)
 
-	if err!=nil{
-		return nil,err
+	if err != nil {
+		return nil, err
 	}
 
-	baseStr:=base64.StdEncoding.EncodeToString(c)
-
+	baseStr := base64.StdEncoding.EncodeToString(c)
 
 	return []byte(baseStr), nil
 }
 func (m *middleHandler) CommandToPacketLowercase(cmd *CommandLowerCase) ([]byte, error) {
 
-	c,err:=json.Marshal(cmd)
+	c, err := json.Marshal(cmd)
 
-	if err!=nil{
-		return nil,err
+	if err != nil {
+		return nil, err
 	}
 
-	baseStr:=base64.StdEncoding.EncodeToString(c)
-
+	baseStr := base64.StdEncoding.EncodeToString(c)
 
 	return []byte(baseStr), nil
 }
