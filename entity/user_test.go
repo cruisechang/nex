@@ -17,18 +17,18 @@ func TestNewUser(t *testing.T) {
 	}{
 		{
 			name: "user0",
-			args:args{userID:0,connID:"connID"},
-			want:NewUser(0,"connID"),
+			args: args{userID: 0, connID: "connID"},
+			want: NewUser(0, "connID"),
 		},
 		{
 			name: "user1",
-			args:args{userID:0,connID:""},
-			want:NewUser(0,""),
+			args: args{userID: 0, connID: ""},
+			want: NewUser(0, ""),
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewUser(tt.args.userID,tt.args.connID); !reflect.DeepEqual(got, tt.want) {
+			if got := NewUser(tt.args.userID, tt.args.connID); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("NewUser() = %v, want %v", got, tt.want)
 			}
 		})
@@ -53,7 +53,7 @@ func Test_user_ConnID(t *testing.T) {
 		fields fields
 		want   string
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -94,7 +94,7 @@ func Test_user_GameID(t *testing.T) {
 		fields fields
 		want   string
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -138,7 +138,7 @@ func Test_user_SetGameID(t *testing.T) {
 		fields fields
 		args   args
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -177,7 +177,7 @@ func Test_user_Name(t *testing.T) {
 		fields fields
 		want   string
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -221,7 +221,7 @@ func Test_user_SetName(t *testing.T) {
 		fields fields
 		args   args
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -260,7 +260,7 @@ func Test_user_SessionID(t *testing.T) {
 		fields fields
 		want   string
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -304,7 +304,7 @@ func Test_user_SetSessionID(t *testing.T) {
 		fields fields
 		args   args
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -343,7 +343,7 @@ func Test_user_IsTest(t *testing.T) {
 		fields fields
 		want   int
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -387,7 +387,7 @@ func Test_user_SetIsTest(t *testing.T) {
 		fields fields
 		args   args
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -426,7 +426,7 @@ func Test_user_Credit(t *testing.T) {
 		fields fields
 		want   float32
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -470,7 +470,7 @@ func Test_user_SetCredit(t *testing.T) {
 		fields fields
 		args   args
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -509,7 +509,7 @@ func Test_user_AccessID(t *testing.T) {
 		fields fields
 		want   string
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -553,7 +553,7 @@ func Test_user_SetAccessID(t *testing.T) {
 		fields fields
 		args   args
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -596,7 +596,7 @@ func Test_user_SetStringVariable(t *testing.T) {
 		fields fields
 		args   args
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -640,7 +640,7 @@ func Test_user_GetStringVariable(t *testing.T) {
 		want    string
 		wantErr bool
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -690,7 +690,7 @@ func Test_user_SetFloatVariable(t *testing.T) {
 		fields fields
 		args   args
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -734,7 +734,7 @@ func Test_user_GetFloatVariable(t *testing.T) {
 		want    float32
 		wantErr bool
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -833,8 +833,8 @@ func Test_user_SetIntVariable(t *testing.T) {
 				intVarTable:   tt.fields.intVarTable,
 			}
 			u.SetIntVariable(tt.args.key, tt.args.value)
-			f,_:=u.GetIntVariable("freeSpinTimes")
-			t.Logf("Test_user_SetIntVariable freeSpinTimes:%d\n",f)
+			f, _ := u.GetIntVariable("freeSpinTimes")
+			t.Logf("Test_user_SetIntVariable freeSpinTimes:%d\n", f)
 		})
 	}
 }
@@ -862,7 +862,7 @@ func Test_user_GetIntVariable(t *testing.T) {
 		want    int
 		wantErr bool
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

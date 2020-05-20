@@ -1,9 +1,9 @@
 package nex
 
 import (
-	"io/ioutil"
 	"encoding/json"
 	"errors"
+	"io/ioutil"
 	"time"
 )
 
@@ -135,17 +135,18 @@ func (c *Configurer) HttpServerAddress() (addr, port string) {
 	return c.data.HttpServer.Address, c.data.HttpServer.Port
 }
 func (c *Configurer) HttpServerReadTimeout() time.Duration {
-	return time.Second*time.Duration(c.data.HttpServer.ReadTimeoutSecond)
+	return time.Second * time.Duration(c.data.HttpServer.ReadTimeoutSecond)
 }
 func (c *Configurer) HttpServerWriteTimeout() time.Duration {
-	return time.Second*time.Duration(c.data.HttpServer.WriteTimeoutSecond)
+	return time.Second * time.Duration(c.data.HttpServer.WriteTimeoutSecond)
 }
 func (c *Configurer) HttpServerIdleTimeout() time.Duration {
-	return time.Second*time.Duration(c.data.HttpServer.IdleTimeoutSecond)
+	return time.Second * time.Duration(c.data.HttpServer.IdleTimeoutSecond)
 }
 func (c *Configurer) HttpServerMaxHeaderBytes() int {
 	return c.data.HttpServer.MaxHeaderBytes
 }
+
 //http client
 
 func (c *Configurer) HttpClientAddress() (addr, port string) {

@@ -1,39 +1,38 @@
 package builtinEvent
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
-
 
 func TestEventManager(t *testing.T) {
 
-	nm, err := NewEventManager()
+	nm, err := NewManager()
 
 	if err != nil {
 		t.Errorf("TestEventManager NewNotifyManager error:%s\n", err.Error())
 	}
 
-	p:=createEventProcessor()
+	p := createEventProcessor()
 
-	if err=nm.RegisterProcessor(EventUserLost, p);err!=nil{
+	if err = nm.RegisterProcessor(EventUserLost, p); err != nil {
 		s := "TestEventManager RegisterProcessor error:%s\n"
-		t.Errorf(s,err.Error())
+		t.Errorf(s, err.Error())
 	}
 
-	if err=nm.RegisterProcessor(1,p);err==nil{
+	if err = nm.RegisterProcessor(1, p); err == nil {
 		s := "TestEventManager RegisterProcessor must error but not :%s\n"
-		t.Errorf(s,err.Error())
+		t.Errorf(s, err.Error())
 	}
 
-	n:=&EventObject{
-		Code:EventUserLost,
-		User:nil,
+	n := &EventObject{
+		Code: EventUserLost,
+		User: nil,
 	}
-	if err=nm.RunProcessor(n) ;err!=nil{
+	if err = nm.RunProcessor(n); err != nil {
 
 		s := "TestEventManager RunProcessor error but not :%s\n"
-		t.Errorf(s,err.Error())
+		t.Errorf(s, err.Error())
 	}
 
 }
@@ -45,7 +44,6 @@ func createEventProcessor() Processor {
 type Processor interface {
 	Run(obj *EventObject) error
 }
-
 
 type processor struct {
 }

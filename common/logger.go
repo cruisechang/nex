@@ -3,8 +3,8 @@ package common
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/fatih/color"
 	"github.com/cruisechang/goutil/debug"
+	"github.com/fatih/color"
 	"os"
 )
 
@@ -110,7 +110,6 @@ func PrintFatal(function interface{}, v ...interface{}) {
 	c.DisableColor()
 	//debug.LogFatal(os.Stdout, debug.GetShortPackageAndFunctionName(function)+":", v)
 }
-
 
 /*
 //LogGame log file info for game client.

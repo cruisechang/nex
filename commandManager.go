@@ -1,8 +1,8 @@
 package nex
 
 import (
-	"sync"
 	"github.com/juju/errors"
+	"sync"
 )
 
 type CommandManager interface {
@@ -18,7 +18,7 @@ type commandManager struct {
 	mutex          *sync.Mutex
 }
 
-func NewCommandManager()(CommandManager, error) {
+func NewCommandManager() (CommandManager, error) {
 
 	c := &commandManager{
 		processorTable: make(map[string]CommandProcessor),
@@ -53,7 +53,7 @@ func (cs *commandManager) RegisterProcessor(cmdName string, p CommandProcessor) 
 	return nil
 }
 func (cs *commandManager) UnRegisterProcessor(cmdName string) {
-	delete(cs.processorTable,cmdName)
+	delete(cs.processorTable, cmdName)
 }
 
 func (cs *commandManager) containProcessor(cmdName string) bool {

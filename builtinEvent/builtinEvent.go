@@ -1,9 +1,9 @@
 package builtinEvent
 
 import (
-	"sync"
 	"errors"
 	"github.com/cruisechang/nex/entity"
+	"sync"
 )
 
 //Notify code is defined by nex
